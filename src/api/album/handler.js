@@ -9,6 +9,7 @@ class AlbumsHandler {
     this.getAlbumByIdHandler = this.getAlbumByIdHandler.bind(this);
     this.putAlbumByIdHandler = this.putAlbumByIdHandler.bind(this);
     this.deleteAlbumByIdHandler = this.deleteAlbumByIdHandler.bind(this);
+    this.getSongsbyAlbumIdHandler = this.getSongsbyAlbumIdHandler.bind(this);
   }
 
   async postAlbumHandler(request, h) {
@@ -119,6 +120,37 @@ class AlbumsHandler {
       return {
         status: 'success',
         message: 'Album berhasil dihapus',
+      };
+    } catch (error) {
+      if (error instanceof ClientError) {
+        const response = h.response({
+          status: 'fail',
+          message: error.message,
+        });
+        response.code(error.statusCode);
+        return response;
+      }
+
+      // Server ERROR!
+      const response = h.response({
+        status: 'error',
+        message: 'Maaf, terjadi kegagalan pada server kami.',
+      });
+      response.code(500);
+      console.error(error);
+      return response;
+    }
+  }
+
+  async getSongsbyAlbumIdHandler(request, h) {
+    try {
+      const { albumId } = request.params;
+      const album = await this.service.getSongsbyAlbumId(albumId);
+      return {
+        status: 'success',
+        data: {
+          album,
+        },
       };
     } catch (error) {
       if (error instanceof ClientError) {

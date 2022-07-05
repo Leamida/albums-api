@@ -32,7 +32,7 @@ const mapDBToModelWithoutalbumId = ({
   duration,
 });
 
-const mapDBToModelOnlySelectedItem = ({
+const mapDBToModelSongs = ({
   id,
   title,
   performer,
@@ -42,4 +42,19 @@ const mapDBToModelOnlySelectedItem = ({
   performer,
 });
 
-module.exports = { mapDBToModel, mapDBToModelWithoutalbumId, mapDBToModelOnlySelectedItem };
+const mapDBToModelAlbum = ({
+  id,
+  name,
+  year,
+}) => ({
+  id,
+  name,
+  year,
+});
+
+module.exports = {
+  mapDBToModel,
+  mapDBToModelWithoutalbumId,
+  mapDBToModelAlbum,
+  mapDBToModelSongs,
+};
